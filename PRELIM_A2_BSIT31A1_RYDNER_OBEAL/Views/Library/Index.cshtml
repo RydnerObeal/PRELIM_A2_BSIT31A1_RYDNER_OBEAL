@@ -1,0 +1,40 @@
+﻿@model PRELIM_A2_BSIT31A1_RYDNER_OBEAL.Models.Library
+
+@{
+    ViewData["Title"] = "Library Book List";
+}
+
+<h2>📚 Library Book List</h2>
+
+@if (Model?.Books == null || !Model.Books.Any())
+{
+    <p>No books available in the library.</p>
+}
+else
+{
+    <table border="1" cellpadding="6" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+        <thead style="background-color: #f2f2f2;">
+            <tr>
+                <th>📖 Title</th>
+                <th>✍️ Author</th>
+                <th>✅ Is Available?</th>
+                <th>👤 Borrowed By</th>
+                <th>📅 Date Last Returned</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model.Books)
+            {
+                <tr>
+                    <td>@(book.Title ?? "Untitled")</td>
+                    <td>@(book.Author?.Name ?? "Unknown Author")</td>
+                    <td style="color:@(book.IsAvailable ? "green" : "red")">
+                        @(book.IsAvailable ? "Yes" : "No")
+                    </td>
+                    <td>@(book.BorrowedBy?.Name ?? "None")</td>
+                    <td>@(book.DateLastReturned?.ToShortDateString() ?? "Never Returned")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
