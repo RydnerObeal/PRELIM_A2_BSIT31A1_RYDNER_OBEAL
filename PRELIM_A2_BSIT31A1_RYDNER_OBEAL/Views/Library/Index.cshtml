@@ -1,40 +1,64 @@
-﻿@model PRELIM_A2_BSIT31A1_RYDNER_OBEAL.Models.Library
+﻿@* This view is strongly typed to the Library model class *@
+@model PRELIM_A2_BSIT31A1_RYDNER_OBEAL.Models.Library
 
 @{
+    // Set the title of the web page that can be accessed in the layout
     ViewData["Title"] = "Library Book List";
 }
 
 <h2>📚 Library Book List</h2>
 
+@*
+    Check if the Books property of the Library model is either null
+    or empty (no books available). If so, show a message.
+*@
 @if (Model?.Books == null || !Model.Books.Any())
 {
-    <p>No books available in the library.</p>
+    // If no books exist, display a message
+<p>No books available in the library.</p>
 }
 else
 {
-    <table border="1" cellpadding="6" cellspacing="0" style="width: 100%; border-collapse: collapse;">
-        <thead style="background-color: #f2f2f2;">
-            <tr>
-                <th>📖 Title</th>
-                <th>✍️ Author</th>
-                <th>✅ Is Available?</th>
-                <th>👤 Borrowed By</th>
-                <th>📅 Date Last Returned</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var book in Model.Books)
+    // Display a table with book details if books are available
+<table border="1" cellpadding="6" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+    <thead style="background-color: #f2f2f2;">
+        <tr>
+            <th>📖 Title</th>              
+            <th>✍️ Author</th>            
+            <th>✅ Is Available?</th>     
+            <th>👤 Borrowed By</th>       
+            <th>📅 Date Last Returned</th> 
+        </tr>
+    </thead>
+    <tbody>
+        @* Loop through each book in the list and display its details *@
+        @foreach (var book in Model.Books)
             {
-                <tr>
-                    <td>@(book.Title ?? "Untitled")</td>
-                    <td>@(book.Author?.Name ?? "Unknown Author")</td>
-                    <td style="color:@(book.IsAvailable ? "green" : "red")">
-                        @(book.IsAvailable ? "Yes" : "No")
-                    </td>
-                    <td>@(book.BorrowedBy?.Name ?? "None")</td>
-                    <td>@(book.DateLastReturned?.ToShortDateString() ?? "Never Returned")</td>
-                </tr>
+        <tr>
+            @* Display the title of the book or "Untitled" if null *@
+            <td>@(book.Title ?? "Untitled")</td>
+
+            @* Display the name of the author or "Unknown Author" if not specified *@
+            <td>@(book.Author?.Name ?? "Unknown Author")</td>
+
+            @*
+                Display "Yes" if the book is available, in green font.
+                Display "No" if not available, in red font.
+            *@
+            <td style="color:@(book.IsAvailable ? "green" : "red")">
+                @(book.IsAvailable ? "Yes" : "No")
+            </td>
+
+            @* Display the name of the person who borrowed the book or "None" if no one *@
+            <td>@(book.BorrowedBy?.Name ?? "None")</td>
+
+            @*
+                Display the short date format of the last return date.
+                If the book has never been returned, show "Never Returned".
+            *@
+            <td>@(book.DateLastReturned?.ToShortDateString() ?? "Never Returned")</td>
+        </tr>
             }
-        </tbody>
-    </table>
+    </tbody>
+</table>
 }
